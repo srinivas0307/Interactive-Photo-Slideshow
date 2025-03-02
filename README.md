@@ -1,12 +1,12 @@
-# Project K - Group 61
+# Interactive Photo Slideshow
 
 ## Overview
-Project K is a web-based application that provides a specific functionality (please specify the project purpose). It utilizes Flask as the backend framework and includes HTML, CSS, and JavaScript for the frontend.
+Interactive Photo Slideshow is a web-based application that allows users to create, manage, and display photo slideshows interactively. It utilizes Flask as the backend framework and includes HTML, CSS, and JavaScript for the frontend.
 
 ## Features
 - User authentication system
-- Video processing capabilities
-- Admin panel for managing users and data
+- Interactive slideshow creation
+- Admin panel for managing users and slideshows
 - Responsive UI with CSS and JavaScript
 
 ## Installation
@@ -54,4 +54,3 @@ course-project-project-k-group-61-main/
 │── opt/render/.postgresql/  # Database SSL certificates
 │── .gitignore               # Git ignore file
 ```
-
