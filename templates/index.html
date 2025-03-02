@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Slideshow App</title>
+    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"> -->
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+    <style>
+        /* Reset some default styles */
+        body,
+        h1,
+        h2,
+        p,
+        ul,
+        li {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: '', sans-serif;
+            font-size: 150%;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .osettings {
+            padding-left: 20%;
+            padding-top: 0%;
+            padding-right: 40%;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #0a0909;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: turquoise;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            background-color: rgb(39, 35, 35);
+        }
+
+        .upload-container {
+            border: 2px dashed #3498db;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .selected-images {
+            margin-top: 20px;
+        }
+
+        .upload-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .customization-container {
+            padding: 20px;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+        }
+
+
+        .selected-images {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .selected-images img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="file"],
+        input[type="number"],
+        select {
+            margin-bottom: 15px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .contact {
+            margin-top: 20%;
+            text-align: center;
+            color: turquoise;
+            width: 100%;
+            font-size: 120%;
+        }
+
+        .video-preview {
+            padding-left: 15%;
+            padding-right: 15%;
+            padding-bottom: 0%;
+            padding-top: 1%;
+        }
+
+        .videoof {
+            width: 100%;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .video-controls {
+            padding-left: 0%;
+            position: relative;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        label {
+            color: white;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        #previewVideo {
+            border: 1px solid #3498db;
+            width: 30%;
+            height: 20%;
+            margin-top: 9%;
+            padding: 0%;
+            margin-bottom: 0%;
+        }
+
+        .retrieved-images img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .retrieved-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            /* Adjust this property as needed */
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .uploaded-image {
+            width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+
+        .drag-drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .drag-drop-area.dragover {
+            background-color: #f0f0f0;
+        }
+
+
+        /* Add styles for User Authentication and Admin Screen sections as needed */
+    </style>
+</head>
+
+<body
+    style="background-image: url(https://i.pinimg.com/originals/62/39/4d/62394d753859943e6a1a36443ef78795.gif);background-repeat: no-repeat;background-size: cover;font-family: 'Sofia';">
+    <h1 class="mb-4" style="text-align: center;font-size: 300%;">Photo Slideshow App</h1>
+    <div style="display: flex;">
+        <div style="margin:0">
+            <form action="/logout">
+                <button type="submit" class="btn btn-primary" style="text-align: center;">Logout</button>
+            </form><br>
+            <button id="profileButton">Profile</button>
+            <div id="userData" style="color:aqua"></div>
+        </div>
+        <div class="container mt-5" style="margin-left: auto;">
+            <div class="section">
+                <h2>Upload Images</h2>
+                <form id="uploadForm" method="POST" action="/upload_images" enctype="multipart/form-data">
+                    <div class="upload-container">
+                        <input type="file" id="imageUpload" name="images" multiple accept=".jpg, .jpeg, .png"
+                            class="form-control mb-3">
+                        <br>
+                        <div id="dragDropArea" class="drag-drop-area">
+                            <p>Drag & Drop files here</p>
+                        </div>
+                        <br>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload Files</button>
+                </form>
+                <button id="retrieveImagesButton" class="btn btn-primary">Retrieve Images</button>
+            </div>
+
+
+            <div class="section">
+                <h2>Select Images for Slideshow</h2>
+                <div class="retrieved-images">
+                    <div class="image-gallery mt-3" id="imageGallery"></div>
+                    <!-- Display selected images here -->
+                </div>
+                <button id="select-images-button" class="btn btn-primary">Select Images for Slideshow</button>
+            </div><br>
+
+            <!-- Video Customization Section -->
+            <div class="section mt-4">
+                <h2>Video Customization</h2>
+                <div class="customization-container">
+                    <label for="backgroundMusic">Background Music :</label>
+                    <select id="backgroundMusic" class="form-select mb-3"></select>
+                    <audio id="audioPlayer" controls></audio>
+                    <label for="imageDuration">Image Duration (seconds) :</label>
+                    <input type="number" id="imageDuration" min="1" value="5" class="form-control mb-3">
+                    <label for="transitionEffect">Transition Effect :</label>
+                    <select id="transitionEffect" class="form-select mb-3">
+                        <option value="fade">Fade In</option>
+                        <option value="crossfade">Fade Out</option>
+                        <option value="slide">Slide</option>
+                        <!-- Add more transition options as needed -->
+                    </select>
+                    <label for="videoResolution">Video Resolution:</label>
+                    <select id="videoResolution" name="resolution" class="form-select mb-3">
+                        <option value="480p">480p</option>
+                        <option value="720p">720p</option>
+                        <option value="1080p">1080p</option>
+                        <!-- Add more resolution options as needed -->
+                    </select>
+
+                    <label for="videoQuality">Video Quality:</label>
+                    <select id="videoQuality" name="quality" class="form-select mb-3">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <!-- Add more quality options as needed -->
+                    </select>
+                </div>
+            </div><br>
+            <form id="createSlideshowForm" action="/create_slideshow_video" method="POST">
+                <button type="button" id="createSlideshowButton" class="btn btn-success"
+                    style="background-color: #0d6aec;text-align: center;">Create Slideshow</button>
+            </form><br>
+            <!-- User Authentication Section -->
+            <div class="contact">
+                Contact us by mail:<br>
+                billuri.srinivasu@students.iiit.ac.in<br>
+                mannem.siddartha@students.iiit.ac.in<br>
+                amudala.jagadeesh@students.iiit.ac.in<br>
+            </div>
+        </div>
+        <!-- Add Bootstrap JS and Popper.js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Add event listener for file input change
+                const selectImagesButton = document.getElementById('select-images-button');
+                selectImagesButton.addEventListener('click', selectImagesForSlideshow);
+
+                // Add event listener for image duration change
+                const imageDurationInput = document.getElementById('imageDuration');
+                imageDurationInput.addEventListener('change', handleImageDurationChange);
+
+                // Add event listener for transition effect change
+                const transitionEffectSelect = document.getElementById('transitionEffect');
+                transitionEffectSelect.addEventListener('change', handleTransitionEffectChange);
+                const retrieveImagesButton = document.getElementById('retrieveImagesButton');
+                retrieveImagesButton.addEventListener('click', retrieveImages);
+
+                const backgroundMusicSelect = document.getElementById('backgroundMusic');
+                backgroundMusicSelect.addEventListener('change', handleBackgroundMusicChange);
+                const createSlideshowButton = document.getElementById('createSlideshowButton');
+                createSlideshowButton.addEventListener('click', createSlideshow);
+
+                function createSlideshow() {
+                    const selectedCheckboxes = document.querySelectorAll('.retrieved-images .image-checkbox:checked');
+
+                    if (selectedCheckboxes.length === 0) {
+                        alert('No images selected for the slideshow.');
+                        return;
+                    }
+
+                    const selectedImages = [];
+
+                    selectedCheckboxes.forEach(checkbox => {
+                        const imageContainer = checkbox.closest('.image-container');
+                        const imageData = checkbox.value;
+                        const filename = checkbox.dataset.filename;
+
+                        // Add the selected image data to the array
+                        selectedImages.push({
+                            imageData: imageData,
+                            filename: filename
+                        });
+                    });
+
+                    const selectedMusicId = document.getElementById('backgroundMusic').value;
+
+                    const selectedDuration = document.getElementById('imageDuration').value;
+
+                    const selectedTransition = document.getElementById('transitionEffect').value;
+
+                    const selectedResolution = document.getElementById('videoResolution').value;
+
+                    const selectedquality = document.getElementById('videoQuality').value;
+
+
+
+                    // Create hidden input fields for selected images and audio ID
+                    const selectedImagesInput = document.createElement('input');
+                    selectedImagesInput.type = 'hidden';
+                    selectedImagesInput.name = 'selectedImages';
+                    selectedImagesInput.value = JSON.stringify(selectedImages);
+                    document.getElementById('createSlideshowForm').appendChild(selectedImagesInput);
+
+                    const selectedAudioIdInput = document.createElement('input');
+                    selectedAudioIdInput.type = 'hidden';
+                    selectedAudioIdInput.name = 'selectedAudioId';
+                    selectedAudioIdInput.value = selectedMusicId;
+                    document.getElementById('createSlideshowForm').appendChild(selectedAudioIdInput);
+
+                    const selectedDurationinput = document.createElement('input');
+                    selectedDurationinput.type = 'hidden';
+                    selectedDurationinput.name = 'selectedduration';
+                    selectedDurationinput.value = selectedDuration;
+                    document.getElementById('createSlideshowForm').appendChild(selectedDurationinput);
+
+                    const selectedTranditionstyle = document.createElement('input');
+                    selectedTranditionstyle.type = 'hidden';
+                    selectedTranditionstyle.name = 'selectedtransition';
+                    selectedTranditionstyle.value = selectedTransition;
+                    document.getElementById('createSlideshowForm').appendChild(selectedTranditionstyle);
+
+                    const selectedResolutions = document.createElement('input');
+                    selectedResolutions.type = 'hidden';
+                    selectedResolutions.name = 'selectedResolution';
+                    selectedResolutions.value = selectedResolution;
+                    document.getElementById('createSlideshowForm').appendChild(selectedResolutions);
+
+                    const quality = document.createElement('input');
+                    quality.type = 'hidden';
+                    quality.name = 'videoQuality';
+                    quality.value = selectedquality;
+                    document.getElementById('createSlideshowForm').appendChild(quality);
+
+                    // Submit the form
+                    document.getElementById('createSlideshowForm').submit();
+                }
+
+                retrieveAudioTracks();
+
+                function retrieveAudioTracks() {
+                    // Make a GET request to the server to retrieve audio tracks
+                    fetch('/retrieve_audio_tracks')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the retrieved audio track data
+                            displayRetrievedAudioTracks(data);
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            console.error('Error retrieving audio tracks:', error);
+                        });
+                }
+
+                function displayRetrievedAudioTracks(audioTracks) {
+                    // Clear existing options
+                    backgroundMusicSelect.innerHTML = '';
+
+                    // Loop through the audio tracks and create HTML options
+                    audioTracks.forEach(audioTrack => {
+                        const optionElement = document.createElement('option');
+                        optionElement.value = audioTrack[0];
+                        console.log(audioTrack[0]);
+                        optionElement.text = audioTrack[1];
+                        console.log(audioTrack[1]);
+
+                        // Append the option element to the select
+                        backgroundMusicSelect.appendChild(optionElement);
+                    });
+                }
+
+                function handleBackgroundMusicChange(event) {
+                    const selectedMusicId = parseInt(event.target.value);
+
+                    // Make a request to retrieve the selected audio track by ID
+                    fetch(`/retrieve_audio_track/${selectedMusicId}`)
+                        .then(response => {
+                            if (response.ok) {
+                                return response.blob(); // Convert the response to a Blob
+                            }
+                            throw new Error('Audio track not found');
+                        })
+                        .then(blobData => {
+                            // Play the selected audio
+                            playSelectedAudio(blobData);
+                        })
+                        .catch(error => {
+                            console.error('Error retrieving audio track:', error);
+                        });
+                }
+
+                function playSelectedAudio(audioBlob) {
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = URL.createObjectURL(audioBlob);
+                    audioPlayer.load();
+                    audioPlayer.play();
+                }
+
+                // Function to retrieve images from the server
+                function retrieveImages() {
+                    // Make a GET request to the server to retrieve images
+                    fetch('/retrieve_images')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the retrieved image data
+                            displayRetrievedImages(data);
+                        })
+                        .catch(error => {
+                            console.error('Error retrieving images:', error);
+                        });
+                }
+
+                // Function to display retrieved images on the webpage
+                function displayRetrievedImages(images) {
+                    const imageGallery = document.getElementById('imageGallery');
+
+                    // Clear existing images
+                    imageGallery.innerHTML = '';
+
+                    // Loop through the images and create HTML elements to display them
+                    images.forEach(image => {
+                        // Create a container div for each image
+                        const imageContainer = document.createElement('div');
+                        imageContainer.classList.add('image-container');
+
+                        // Create an img element for the image
+                        const imgElement = document.createElement('img');
+                        imgElement.src = 'data:image/png;base64,' + image.image_data;  // Assuming image_data is base64 encoded
+                        imgElement.alt = image.metadata.filename;
+                        imgElement.title = image.metadata.filename;
+
+                        // Create a checkbox for the image
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.classList.add('image-checkbox');
+                        checkbox.name = 'selected_images[]';  // Add this line
+                        checkbox.value = image.image_data;
+                        checkbox.dataset.filename = image.metadata.filename;
+
+                        // Append the img element and checkbox to the container
+                        imageContainer.appendChild(imgElement);
+                        imageContainer.appendChild(checkbox);
+
+                        // Append the container to the gallery
+                        imageGallery.appendChild(imageContainer);
+                    });
+                }
+
+                function selectImagesForSlideshow() {
+                    const selectedCheckboxes = document.querySelectorAll('.retrieved-images .image-checkbox:checked');
+
+                    if (selectedCheckboxes.length === 0) {
+                        alert('No images selected for the slideshow.');
+                        return;
+                    }
+
+                    const selectedImages = [];
+
+                    selectedCheckboxes.forEach(checkbox => {
+                        const imageContainer = checkbox.closest('.image-container');
+                        const imageData = checkbox.value;
+                        const filename = checkbox.dataset.filename;
+
+                        // Add the selected image data to the array
+                        selectedImages.push({
+                            imageData: imageData,
+                            filename: filename
+                        });
+                    });
+
+                    // Do something with the selected images, e.g., send them to the server or display a message
+                    console.log("Selected Images:", selectedImages);
+                }
+
+                function handleImageDurationChange(event) {
+                    const selectedDuration = event.target.value;
+                    // Handle selected image duration, e.g., update preview
+                    console.log(selectedDuration);
+                }
+
+                function handleTransitionEffectChange(event) {
+                    const selectedEffect = event.target.value;
+                    // Handle Auded transition effect, e.g., update preview
+                    console.log(selectedEffect);
+                }
+            });
+            document.getElementById('profileButton').addEventListener('click', function () {
+                // Send an AJAX request to fetch user data
+                fetch('/profile')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch user data');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update the UI to display user data
+                        document.getElementById('userData').innerHTML = `
+                <p>Welcome ${data[0]}! </p>
+                <p>Username: ${data[0]}</p>
+                <p>Email: ${data[1]}</p>
+            `;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user data:', error);
+                        // Handle errors
+                    });
+            });
+            const dragDropArea = document.getElementById('dragDropArea');
+            const uploadForm = document.getElementById('uploadForm');
+
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dragDropArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            // Highlight drop area when a file is dragged over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dragDropArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dragDropArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            // Handle dropped files
+            dragDropArea.addEventListener('drop', handleDrop, false);
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight() {
+                dragDropArea.classList.add('dragover');
+            }
+
+            function unhighlight() {
+                dragDropArea.classList.remove('dragover');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                // Clear existing files in the input
+                const fileInput = document.getElementById('imageUpload');
+                fileInput.value = '';
+                console.log(files.length);
+                // Create a new DataTransfer object and populate its files property
+                const newDT = new DataTransfer();
+                for (let i = 0; i < files.length; i++) {
+                    newDT.items.add(files[i]);
+                }
+
+                // Set the new DataTransfer object to the file input
+                fileInput.files = newDT.files;
+
+                // Optional: You can display the file names or count
+                // Here's an example to display the count of files dropped
+                const fileCount = files.length;
+                const dropArea = document.getElementById('dragDropArea');
+                dropArea.innerHTML = `<p>${fileCount} file${fileCount > 1 ? 's' : ''} dropped</p>`;
+            }
+
+        </script>
+</body><br>
+
+</html>

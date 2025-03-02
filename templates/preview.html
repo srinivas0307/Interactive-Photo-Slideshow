@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Preview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body
+    style="background-image: url(https://img.freepik.com/free-vector/spot-lights-blue-brick-wall-background_23-2148608680.jpg);background-repeat: initial;background-size: cover;">
+    <div class="videoof" style="text-align: center; width: auto;">
+        <h2 style="align-items: center;text-align: center;font-size: 400%;">Preview</h2>
+        <div class="video-preview">
+            <!-- Display the created slideshow video -->
+            <video id="previewVideo" controls class="w-100" style="width:auto" autoplay loop>
+                <source src="{{ url_for('static', filename='videos/output_video.mp4') }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- Video source will be set using JavaScript -->
+
+            <div class="video-controls mt-2" id="videocontrol">
+                <button id="playButton" class="btn btn-secondary">Play</button>
+                <button id="pauseButton" class="btn btn-secondary">Pause</button>
+                <button id="rewindButton" class="btn btn-secondary">Rewind</button>
+            </div>
+            </div>
+            <button id="downloadButton" class="btn btn-primary" style="text-align: center;">Download</button>
+        </div>
+    </div>
+   
+    <form action="/remake">
+        <button type="submit" class="btn btn-primary" style="text-align: center;margin-left: 1%;">Remake</button>
+    </form>
+    <br><br>
+    <script>
+        const previewVideo = document.getElementById('previewVideo');
+        const playButton = document.getElementById('playButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const rewindButton = document.getElementById('rewindButton');
+
+        playButton.addEventListener('click', function () {
+            previewVideo.play();
+        });
+
+        pauseButton.addEventListener('click', function () {
+            previewVideo.pause();
+        });
+
+        rewindButton.addEventListener('click', function () {
+            previewVideo.currentTime = 0;
+        });
+        downloadButton.addEventListener('click', function () {
+            const videoUrl = "{{ url_for('static', filename='videos/output_video.mp4') }}";
+            const a = document.createElement('a');
+            a.href = videoUrl;
+            a.download = 'output_video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+</body>
+
+</html>

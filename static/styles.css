@@ -1,0 +1,161 @@
+
+
+/* Reset some default styles */
+body, h1, h2, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: '', sans-serif;
+    font-size: 150%;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.osettings{
+    padding-left: 20%;
+    padding-top: 0%;
+    padding-right:40%;
+}
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #0a0909;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: turquoise;
+}
+
+.section {
+    margin-bottom: 20px;
+    background-color: rgb(39, 35, 35);
+}
+
+.upload-container {
+    border: 2px dashed #3498db;
+    padding: 20px;
+    text-align: center;
+}
+
+.drag-drop {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+}
+
+#dragDropArea{
+    color:rgb(226, 182, 182);
+}
+
+.selected-images {
+    margin-top: 20px;
+}
+
+.upload-button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.customization-container {
+    padding: 20px;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+}
+
+
+.selected-images {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.selected-images img {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="file"], input[type="number"], select {
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.contact{
+    margin-top:20%;
+    text-align: center;
+    color:turquoise;
+    width : 100%;
+    font-size: 120%;
+}
+
+.video-preview {
+    padding-left:15%;
+    padding-right:15%;
+    padding-bottom: 0%;
+    padding-top:1%;
+}
+
+.videoof{
+    width:100%;
+}
+
+video {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.video-controls {
+    padding-left: 0%;
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+}
+
+label{
+    color:white;
+}
+
+button {
+    width:auto;
+    background-color: #3498db;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+#previewVideo {
+    border: 1px solid #3498db;
+    width:30%;
+    height:20%;
+    margin-top:9%;
+    padding: 0%;
+    margin-bottom: 0%;
+}
+
+/* Add styles for User Authentication and Admin Screen sections as needed */
