@@ -20,7 +20,7 @@ Ensure you have the following installed on your system:
 1. Clone this repository:
    ```sh
    git clone https://github.com/srinivas0307/Interactive-Photo-Slideshow.git
-   cd course-project-project-k-group-61-main
+   cd Interactive Photo Slideshow
    ```
 2. Create a virtual environment (optional but recommended):
    ```sh
@@ -39,7 +39,7 @@ Ensure you have the following installed on your system:
 
 ## File Structure
 ```
-course-project-project-k-group-61-main/
+Interactive Photo Slideshow/
 │── app.py                   # Main application script
 │── requirements.txt         # Dependencies
 │── static/                  # Static files (CSS, videos, etc.)
@@ -54,3 +54,4 @@ course-project-project-k-group-61-main/
 │── opt/render/.postgresql/  # Database SSL certificates
 │── .gitignore               # Git ignore file
 ```
+
