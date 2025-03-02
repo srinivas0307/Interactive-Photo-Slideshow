@@ -19,7 +19,7 @@ Ensure you have the following installed on your system:
 ### Setup
 1. Clone this repository:
    ```sh
-   git clone <repository-url>
+   git clone https://github.com/srinivas0307/Interactive-Photo-Slideshow.git
    cd course-project-project-k-group-61-main
    ```
 2. Create a virtual environment (optional but recommended):
